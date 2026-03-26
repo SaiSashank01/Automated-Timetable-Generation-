@@ -298,3 +298,5 @@ st.markdown("✔ Mini Break: 03:00–03:10")
 st.markdown("✔ No consecutive subjects")
 st.markdown("✔ Labs in 3 continuous periods")
 
+
+

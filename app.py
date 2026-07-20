@@ -2,11 +2,8 @@ import streamlit as st
 import pandas as pd
 import random
 
-# ---------------------------------------------------
-# Page Configuration
-# ---------------------------------------------------
-
-st.set_page_config(
+st.set_page_config
+(
     page_title="AI Timetable Generator",
     page_icon="📅",
     layout="wide"
@@ -14,14 +11,8 @@ st.set_page_config(
 
 st.title("📅 AI Automated College Timetable Generator")
 st.markdown("Generate a **conflict-free weekly timetable** using AI logic.")
-
-# ---------------------------------------------------
-# Days & Teaching Time Slots
-# ---------------------------------------------------
-
 days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
-# Teaching periods only
 teaching_slots = [
     "09:00–09:50",
     "09:50–10:40",
@@ -34,17 +25,12 @@ teaching_slots = [
 ]
 
 periods_per_day = len(teaching_slots)
-
-# ---------------------------------------------------
-# Sidebar Inputs
-# ---------------------------------------------------
-
 st.sidebar.header("⚙️ Timetable Configuration")
 
 st.sidebar.write("Days:", days)
 st.sidebar.write("College Timing: 9:00 AM – 4:50 PM")
 
-# Subjects
+
 st.sidebar.subheader("Subjects")
 
 subjects = []
@@ -53,7 +39,6 @@ for i in range(6):
     if sub:
         subjects.append(sub)
 
-# Labs
 st.sidebar.subheader("Labs")
 
 labs = []
@@ -61,12 +46,7 @@ for i in range(3):
     lab = st.sidebar.text_input(f"Lab {i+1}", key=f"lab{i}")
     if lab:
         labs.append(lab)
-
-# ---------------------------------------------------
-# Helper Function
-# Prevent Consecutive Subjects
-# ---------------------------------------------------
-
+        
 def get_non_repeating_subject(prev_subject, subjects):
 
     available = [s for s in subjects if s != prev_subject]
@@ -76,10 +56,6 @@ def get_non_repeating_subject(prev_subject, subjects):
 
     return random.choice(available)
 
-# ---------------------------------------------------
-# Generate Timetable
-# ---------------------------------------------------
-
 if st.button("🚀 Generate Timetable"):
 
     if not subjects or not labs:
@@ -88,7 +64,6 @@ if st.button("🚀 Generate Timetable"):
 
     else:
 
-        # Assign labs to random days
         available_days = days.copy()
         random.shuffle(available_days)
 
@@ -100,7 +75,6 @@ if st.button("🚀 Generate Timetable"):
 
         timetable = []
 
-        # Generate Rows
         for day in days:
 
             row = [""] * periods_per_day
@@ -112,8 +86,6 @@ if st.button("🚀 Generate Timetable"):
                 if assigned_day == day:
                     lab_today = lab
                     break
-
-            # Place Lab Randomly (3 continuous)
             if lab_today:
 
                 lab_start = random.randint(
@@ -127,7 +99,6 @@ if st.button("🚀 Generate Timetable"):
                 ):
                     row[i] = lab_today
 
-            # Fill Subjects
             for p in range(periods_per_day):
 
                 if row[p] == "":
@@ -145,17 +116,11 @@ if st.button("🚀 Generate Timetable"):
 
             timetable.append(row)
 
-        # Create DataFrame
         df = pd.DataFrame(
             timetable,
             index=days,
             columns=teaching_slots
         )
-
-        # ---------------------------------------------------
-        # Insert Break Columns
-        # ---------------------------------------------------
-
         df.insert(
             2,
             "Mini Break\n10:40–10:50",
@@ -175,22 +140,12 @@ if st.button("🚀 Generate Timetable"):
         )
 
         st.success("✅ Timetable Generated Successfully!")
-
-        # ---------------------------------------------------
-        # Lab Distribution Info
-        # ---------------------------------------------------
-
         lab_info = ", ".join(
             [f"{lab} on {day}"
              for lab, day in lab_assignments.items()]
         )
 
         st.info(f"📋 Lab Distribution: {lab_info}")
-
-        # ---------------------------------------------------
-        # HTML + CSS Styled Table
-        # ---------------------------------------------------
-
         html_table = """
         <style>
 
@@ -237,7 +192,6 @@ if st.button("🚀 Generate Timetable"):
 
         html_table += "<table>"
 
-        # Header Row
         html_table += "<tr>"
         html_table += "<th>Day / Time</th>"
 
@@ -246,7 +200,6 @@ if st.button("🚀 Generate Timetable"):
 
         html_table += "</tr>"
 
-        # Data Rows
         for day in days:
 
             html_table += "<tr>"
@@ -274,20 +227,12 @@ if st.button("🚀 Generate Timetable"):
             unsafe_allow_html=True
         )
 
-        # ---------------------------------------------------
-        # Download CSV
-        # ---------------------------------------------------
-
         st.download_button(
             label="⬇ Download Timetable CSV",
             data=df.to_csv(),
             file_name="college_timetable.csv",
             mime="text/csv"
         )
-
-# ---------------------------------------------------
-# Footer
-# ---------------------------------------------------
 
 st.markdown("---")
 

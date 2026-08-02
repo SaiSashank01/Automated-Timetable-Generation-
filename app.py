@@ -11,7 +11,6 @@ st.set_page_config
 st.title("📅 AI Automated College Timetable Generator")
 st.markdown("Generate a **conflict-free weekly timetable** using AI logic.")
 days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
-
 teaching_slots = [
    "09:00–09:50",
     "09:50–10:40",
@@ -232,7 +231,6 @@ if st.button("🚀 Generate Timetable"):
             file_name="college_timetable.csv",
             mime="text/csv"
         )
-
 st.markdown("---")
 st.markdown("✔ College Timing: 9:00 – 4:50")
 st.markdown("✔ Mini Break: 10:40–10:50")

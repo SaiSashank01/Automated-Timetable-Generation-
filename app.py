@@ -2,8 +2,7 @@ import streamlit as st
 import pandas as pd
 import random
 
-st.set_page_config
-(
+st.set_page_config(
     page_title="AI Timetable Generator",
     page_icon="📅",
     layout="wide"
